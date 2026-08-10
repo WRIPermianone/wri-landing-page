@@ -1,13 +1,13 @@
 // Scroll-reveal animation for section content. Respects prefers-reduced-motion via CSS.
 (function () {
-  const revealEls = document.querySelectorAll('.reveal');
+  var revealEls = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window) || revealEls.length === 0) {
-    revealEls.forEach((el) => el.classList.add('is-visible'));
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
     return;
   }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
+  var io = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
           io.unobserve(entry.target);
@@ -16,12 +16,13 @@
     },
     { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
   );
-  revealEls.forEach((el) => io.observe(el));
+  revealEls.forEach(function (el) { io.observe(el); });
 })();
 
 // ============================== DECK REQUEST MODAL ==============================
 (function () {
   var DECK_URL = './assets/WRI-Permian-1-Investor-Deck.pdf';
+  var FORM_ENDPOINT = 'https://formsubmit.co/ajax/info@warriorraceinvestments.com';
 
   var overlay = document.getElementById('deckModalOverlay');
   var closeBtn = document.getElementById('deckModalClose');
@@ -73,6 +74,48 @@
     if (e.key === 'Escape' && !overlay.hidden) closeModal();
   });
 
+  function showResultPanel(accredited) {
+    if (accredited === 'YES') {
+      if (downloadLink) {
+        downloadLink.href = DECK_URL;
+        downloadLink.setAttribute('download', 'WRI-Permian-1-Investor-Deck.pdf');
+        downloadLink.textContent = 'Download the Investment Deck';
+      }
+      showPanel(panelAccredited);
+    } else {
+      showPanel(panelDeclined);
+    }
+  }
+
+  function fallbackMailto(payload) {
+    // Use a hidden anchor to avoid page navigation issues
+    var subject = 'Deck Request — WRI Permian 1 — ' + payload.first_name + ' ' + payload.last_name;
+    var body = [
+      'New deck request from the WRI Permian 1 landing page:',
+      '',
+      'Name: ' + payload.first_name + ' ' + payload.last_name,
+      'Email: ' + payload.email,
+      'Phone: ' + payload.phone,
+      'Accredited Investor: ' + payload.accredited,
+      'Typical Investment Size: ' + payload.investment_size,
+      'Prior Oil & Gas Experience: ' + payload.prior_experience,
+      'Investment Timeline: ' + payload.timeline,
+      'Investment Goals: ' + payload.goals.join(', '),
+      'Wants a Call: ' + payload.wants_call,
+      '',
+      '---',
+      'Sent from wripermianone.github.io',
+    ].join('\n');
+
+    var mailtoUrl = 'mailto:info@warriorraceinvestments.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    var link = document.createElement('a');
+    link.href = mailtoUrl;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     errorEl.hidden = true;
@@ -105,50 +148,48 @@
       timeline: fd.get('timeline'),
       goals: goals,
       wants_call: fd.get('wants_call'),
+      _subject: 'Deck Request — WRI Permian 1 — ' + fd.get('first_name') + ' ' + fd.get('last_name'),
+      _template: 'table',
+      _captcha: 'false',
     };
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
 
-    // Send email notification to Dalton with all form data
-    var subject = 'Deck Request — WRI Permian 1 — ' + payload.first_name + ' ' + payload.last_name;
-    var body = [
-      'New deck request from the WRI Permian 1 landing page:',
-      '',
-      'Name: ' + payload.first_name + ' ' + payload.last_name,
-      'Email: ' + payload.email,
-      'Phone: ' + payload.phone,
-      'Accredited Investor: ' + payload.accredited,
-      'Typical Investment Size: ' + payload.investment_size,
-      'Prior Oil & Gas Experience: ' + payload.prior_experience,
-      'Investment Timeline: ' + payload.timeline,
-      'Investment Goals: ' + payload.goals.join(', '),
-      'Wants a Call: ' + payload.wants_call,
-      '',
-      '---',
-      'Sent from wripermianone.github.io',
-    ].join('\n');
+    var accredited = payload.accredited;
+    var emailSent = false;
 
-    var mailto = 'mailto:info@warriorraceinvestments.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    // Try FormSubmit.co AJAX endpoint first
+    try {
+      var response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-    // Open email client with notification
-    window.location.href = mailto;
-
-    // After a short delay, show the appropriate panel
-    setTimeout(function () {
-      if (payload.accredited === 'YES') {
-        // Update the download link to point to the actual PDF
-        if (downloadLink) {
-          downloadLink.href = DECK_URL;
-          downloadLink.setAttribute('download', 'WRI-Permian-1-Investor-Deck.pdf');
-          downloadLink.textContent = 'Download the Investment Deck';
+      if (response.ok) {
+        var data = await response.json();
+        if (data.success === 'true' || data.success === true) {
+          emailSent = true;
         }
-        showPanel(panelAccredited);
-      } else {
-        showPanel(panelDeclined);
       }
+    } catch (err) {
+      // Network or CORS error — fall through to mailto fallback
+    }
+
+    // If AJAX failed, try mailto as fallback
+    if (!emailSent) {
+      fallbackMailto(payload);
+    }
+
+    // Show result panel after a short delay
+    setTimeout(function () {
+      showResultPanel(accredited);
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Request';
-    }, 800);
+    }, 1000);
   });
 })();
