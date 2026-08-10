@@ -21,25 +21,25 @@
 
 // ============================== DECK REQUEST MODAL ==============================
 (function () {
-  const API = 'port/8000'.startsWith('__') ? 'http://localhost:8000' : 'port/8000';
+  var DECK_URL = './assets/WRI-Permian-1-Investor-Deck.pdf';
 
-  const overlay = document.getElementById('deckModalOverlay');
-  const closeBtn = document.getElementById('deckModalClose');
-  const form = document.getElementById('deckForm');
-  const errorEl = document.getElementById('deckFormError');
-  const submitBtn = document.getElementById('deckSubmitBtn');
+  var overlay = document.getElementById('deckModalOverlay');
+  var closeBtn = document.getElementById('deckModalClose');
+  var form = document.getElementById('deckForm');
+  var errorEl = document.getElementById('deckFormError');
+  var submitBtn = document.getElementById('deckSubmitBtn');
 
-  const panelForm = document.getElementById('deckModalPanelForm');
-  const panelAccredited = document.getElementById('deckModalPanelAccredited');
-  const panelDeclined = document.getElementById('deckModalPanelDeclined');
-  const downloadLink = document.getElementById('deckDownloadLink');
+  var panelForm = document.getElementById('deckModalPanelForm');
+  var panelAccredited = document.getElementById('deckModalPanelAccredited');
+  var panelDeclined = document.getElementById('deckModalPanelDeclined');
+  var downloadLink = document.getElementById('deckDownloadLink');
 
   if (!overlay || !form) return;
 
-  let lastFocused = null;
+  var lastFocused = null;
 
   function showPanel(panel) {
-    [panelForm, panelAccredited, panelDeclined].forEach((p) => {
+    [panelForm, panelAccredited, panelDeclined].forEach(function (p) {
       if (p) p.hidden = p !== panel;
     });
   }
@@ -51,7 +51,7 @@
     showPanel(panelForm);
     errorEl.hidden = true;
     form.reset();
-    const first = form.querySelector('#df-first');
+    var first = form.querySelector('#df-first');
     if (first) first.focus();
   }
 
@@ -61,28 +61,28 @@
     if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
   }
 
-  document.querySelectorAll('[data-open-deck-modal]').forEach((btn) => {
+  document.querySelectorAll('[data-open-deck-modal]').forEach(function (btn) {
     btn.addEventListener('click', openModal);
   });
 
   closeBtn.addEventListener('click', closeModal);
-  overlay.addEventListener('click', (e) => {
+  overlay.addEventListener('click', function (e) {
     if (e.target === overlay) closeModal();
   });
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !overlay.hidden) closeModal();
   });
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
     errorEl.hidden = true;
 
-    const fd = new FormData(form);
-    const goals = fd.getAll('goals');
+    var fd = new FormData(form);
+    var goals = fd.getAll('goals');
 
-    const requiredSingle = ['first_name', 'last_name', 'email', 'phone', 'accredited', 'investment_size', 'prior_experience', 'timeline', 'wants_call'];
-    for (const key of requiredSingle) {
-      if (!fd.get(key)) {
+    var requiredSingle = ['first_name', 'last_name', 'email', 'phone', 'accredited', 'investment_size', 'prior_experience', 'timeline', 'wants_call'];
+    for (var i = 0; i < requiredSingle.length; i++) {
+      if (!fd.get(requiredSingle[i])) {
         errorEl.textContent = 'Please complete every question before submitting.';
         errorEl.hidden = false;
         return;
@@ -94,7 +94,7 @@
       return;
     }
 
-    const payload = {
+    var payload = {
       first_name: fd.get('first_name'),
       last_name: fd.get('last_name'),
       email: fd.get('email'),
@@ -103,40 +103,46 @@
       investment_size: fd.get('investment_size'),
       prior_experience: fd.get('prior_experience'),
       timeline: fd.get('timeline'),
-      goals,
+      goals: goals,
       wants_call: fd.get('wants_call'),
     };
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Opening your email…';
+    submitBtn.textContent = 'Submitting…';
 
-    // Compose a pre-filled email to Dalton with all form data
-    const subject = `Deck Request — WRI Permian 1 — ${payload.first_name} ${payload.last_name}`;
-    const body = [
-      `New deck request from the WRI Permian 1 landing page:`,
-      ``,
-      `Name: ${payload.first_name} ${payload.last_name}`,
-      `Email: ${payload.email}`,
-      `Phone: ${payload.phone}`,
-      `Accredited Investor: ${payload.accredited}`,
-      `Typical Investment Size: ${payload.investment_size}`,
-      `Prior Oil & Gas Experience: ${payload.prior_experience}`,
-      `Investment Timeline: ${payload.timeline}`,
-      `Investment Goals: ${payload.goals.join(', ')}`,
-      `Wants a Call: ${payload.wants_call}`,
-      ``,
-      `---`,
-      `Sent from warriorraceinvestments.com`,
+    // Send email notification to Dalton with all form data
+    var subject = 'Deck Request — WRI Permian 1 — ' + payload.first_name + ' ' + payload.last_name;
+    var body = [
+      'New deck request from the WRI Permian 1 landing page:',
+      '',
+      'Name: ' + payload.first_name + ' ' + payload.last_name,
+      'Email: ' + payload.email,
+      'Phone: ' + payload.phone,
+      'Accredited Investor: ' + payload.accredited,
+      'Typical Investment Size: ' + payload.investment_size,
+      'Prior Oil & Gas Experience: ' + payload.prior_experience,
+      'Investment Timeline: ' + payload.timeline,
+      'Investment Goals: ' + payload.goals.join(', '),
+      'Wants a Call: ' + payload.wants_call,
+      '',
+      '---',
+      'Sent from wripermianone.github.io',
     ].join('\n');
 
-    const mailto = `mailto:info@warriorraceinvestments.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    var mailto = 'mailto:info@warriorraceinvestments.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 
-    // Open the user's email client with the pre-filled message
+    // Open email client with notification
     window.location.href = mailto;
 
-    // Show the appropriate panel based on accreditation answer
-    setTimeout(() => {
+    // After a short delay, show the appropriate panel
+    setTimeout(function () {
       if (payload.accredited === 'YES') {
+        // Update the download link to point to the actual PDF
+        if (downloadLink) {
+          downloadLink.href = DECK_URL;
+          downloadLink.setAttribute('download', 'WRI-Permian-1-Investor-Deck.pdf');
+          downloadLink.textContent = 'Download the Investment Deck';
+        }
         showPanel(panelAccredited);
       } else {
         showPanel(panelDeclined);
