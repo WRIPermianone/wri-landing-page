@@ -331,10 +331,15 @@
 
     <div class="deck-modal-panel" id="deckModalPanelForm">
       <p class="eyebrow">Confidential &middot; Accredited Investors Only</p>
-      <h3 id="deckModalTitle">Request the Investment Deck</h3>
-      <p class="deck-modal-sub">A few quick questions so we can qualify your request and get you the right materials.</p>
+      <h3 id="deckModalTitle">Request the WRI Permian 1 Materials</h3>
+      <p class="deck-modal-sub">A few quick questions so we can qualify your request and send the Investor Deck, CIM, and Application Agreement.</p>
 
-      <form id="deckForm" novalidate>
+      <form id="deckForm" action="https://formsubmit.co/info@warriorraceinvestments.com" method="POST" novalidate>
+        <input type="hidden" name="_subject" id="deckEmailSubject" value="WRI Permian 1 Materials Request" />
+        <input type="hidden" name="_autoresponse" id="deckAutoresponse" value="" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" id="deckNextUrl" value="https://wripermianone.github.io/wri-landing-page/materials.html" />
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
         <div class="deck-form-row">
           <div class="deck-field">
             <label for="df-first">First name</label>
@@ -414,7 +419,7 @@
 
         <p class="deck-form-error" id="deckFormError" hidden></p>
 
-        <button type="submit" class="btn btn-primary deck-submit" id="deckSubmitBtn">Submit Request</button>
+        <button type="submit" class="btn btn-primary deck-submit" id="deckSubmitBtn">Request Materials</button>
         <p class="deck-form-disclaimer">By submitting, you acknowledge this offering is limited to accredited investors and that WRI is not providing investment, legal, or tax advice.</p>
       </form>
     </div>
