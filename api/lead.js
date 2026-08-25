@@ -86,7 +86,7 @@ async function createGhlContact(fields) {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-        Version: '2021-08-01',
+        Version: '2021-07-28',
         Accept: 'application/json',
       },
       body: JSON.stringify(body),
@@ -103,7 +103,7 @@ async function createGhlContact(fields) {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
-            Version: '2021-08-01',
+            Version: '2021-07-28',
             Accept: 'application/json',
           },
           body: JSON.stringify({ tags: [LEAD_TAG] }),
