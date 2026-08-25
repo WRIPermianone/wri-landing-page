@@ -20,6 +20,7 @@
 
 // Deck request modal and standard FormSubmit submission flow.
 (function () {
+  var THANK_YOU_URL = 'https://wripermianone.github.io/wri-landing-page/thank-you.html';
   var MATERIALS_URL = 'https://wripermianone.github.io/wri-landing-page/materials.html';
   var DECLINED_URL = 'https://wripermianone.github.io/wri-landing-page/request-received.html';
   var DECK_URL = 'https://drive.google.com/file/d/1rbmBQQQSaQBEpiOK1rYxz8hz9wroz4TD/view';
@@ -183,7 +184,7 @@
 
     subjectInput.value = 'WRI Permian 1 Materials Request: ' + firstName + ' ' + lastName;
     autoresponseInput.value = accredited ? accreditedMessage(firstName) : declinedMessage(firstName);
-    nextInput.value = accredited ? MATERIALS_URL : DECLINED_URL;
+    nextInput.value = accredited ? THANK_YOU_URL : DECLINED_URL;
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';

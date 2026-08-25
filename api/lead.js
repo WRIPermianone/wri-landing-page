@@ -8,7 +8,7 @@
  *      "WRI Permian 1 Lead" tag (contacts/{id}/tags).
  *   3. Forward the full submission to FormSubmit so the team still gets the
  *      lead email AND the investor still receives the deck-delivery autoresponse.
- *   4. Redirect the visitor to the materials page (or declined page).
+ *   4. Redirect the visitor to the thank-you page (or declined page).
  *
  * Required Vercel env vars:
  *   GHL_API_KEY      — GoHighLevel Private Access Token (contacts.write)
@@ -20,7 +20,7 @@
 
 const GHL_API = 'https://services.leadconnectorhq.com';
 const FORMSUBMIT_URL = 'https://formsubmit.co/info@warriorraceinvestments.com';
-const DEFAULT_NEXT = 'https://wripermianone.github.io/wri-landing-page/materials.html';
+const DEFAULT_NEXT = 'https://wripermianone.github.io/wri-landing-page/thank-you.html';
 const LEAD_TAG = 'WRI Permian 1 Lead';
 
 function parseBody(req) {
