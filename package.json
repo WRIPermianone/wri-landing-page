@@ -1,0 +1,7 @@
+{
+  "name": "wri-landing-page",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
