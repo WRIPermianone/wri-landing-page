@@ -191,6 +191,8 @@
       var nextInput = document.getElementById('guideNext');
       var DOWNLOAD_URL = 'https://wripermianone.github.io/wri-landing-page/assets/WRI-First-Time-Investors-Guide.pdf';
       var CALENDAR_URL = 'https://calendar.app.google/gRdJZqdeFKwtAd9HA';
+      var DOWNLOAD_PAGE = 'https://wripermianone.github.io/wri-landing-page/guide-download.html';
+      var DECLINED_PAGE = 'https://wripermianone.github.io/wri-landing-page/guide-not-accredited.html';
 
       function showError(msg) {
         errorEl.textContent = msg;
@@ -224,6 +226,29 @@
         ].join('\r\n');
       }
 
+      function buildDeclinedAutoresponse(firstName) {
+        return [
+          'Hello ' + firstName + ',',
+          '',
+          'Thank you for your interest in Warrior Race Investments and the First Time Investors Guide.',
+          '',
+          'Unfortunately, the guide is available only to accredited investors. Based on your response, we are unable to send it to you at this time.',
+          '',
+          'If you believe this is incorrect, or you would like to discuss your situation, please contact Dalton Ortiz at dalton@warriorraceinvestments.com or 469-822-0942.',
+          '',
+          'Best regards,',
+          '',
+          'Dalton Ortiz',
+          'Founder / Managing Partner',
+          'Warrior Race Investments, LLC',
+          '',
+          '--------------------------------------------------',
+          'CONFIDENTIALITY AND RISK NOTICE',
+          '--------------------------------------------------',
+          'Accredited investors only. Confidential. Educational material only, not an offer to sell or a solicitation to buy any security. Oil and gas investments involve a high degree of risk, including potential loss of the entire investment. WRI is not a registered investment advisor, broker-dealer, or tax advisor. Consult your own legal, tax, and financial advisors before investing.'
+        ].join('\r\n');
+      }
+
       form.addEventListener('submit', function (event) {
         event.preventDefault();
         errorEl.hidden = true;
@@ -243,8 +268,9 @@
         }
 
         var firstName = String(data.get('first_name')).trim();
-        autoresponseInput.value = buildAutoresponse(firstName);
-        nextInput.value = 'https://wripermianone.github.io/wri-landing-page/guide-download.html';
+        var accredited = data.get('accredited') === 'YES';
+        autoresponseInput.value = accredited ? buildAutoresponse(firstName) : buildDeclinedAutoresponse(firstName);
+        nextInput.value = accredited ? DOWNLOAD_PAGE : DECLINED_PAGE;
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
