@@ -8,13 +8,13 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #08080c;
-      --surface: #121117;
-      --border: rgba(212, 175, 55, 0.34);
-      --gold: #d4af37;
-      --gold-light: #f0d67a;
-      --text: #f4efe3;
-      --muted: #b8b1a4;
+      --bg: #07080a;
+      --surface: #121722;
+      --border: rgba(214, 170, 90, 0.28);
+      --gold: #d4aa5a; --gold-deep: #8a632d;
+      --gold-light: #f0d996;
+      --text: #f7f0df;
+      --muted: #b7aa90;
     }
     * { box-sizing: border-box; }
     body {
@@ -24,10 +24,10 @@
       place-items: center;
       padding: 28px 16px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.14), transparent 36rem),
+        radial-gradient(circle at 50% 0%, rgba(214, 170, 90, 0.12), transparent 36rem),
         var(--bg);
       color: var(--text);
-      font-family: Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
     }
     main {
@@ -75,7 +75,7 @@
       font-size: 15px;
       font-family: inherit;
     }
-    .field input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.18); }
+    .field input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(214,170,90,0.1); }
     .chips { display: flex; flex-wrap: wrap; gap: 9px; }
     .chip {
       display: inline-flex; align-items: center; gap: 8px;
@@ -86,7 +86,7 @@
       transition: border-color .15s, background .15s;
     }
     .chip input { accent-color: var(--gold); width: 16px; height: 16px; }
-    .chip:has(input:checked) { border-color: var(--gold); background: rgba(212,175,55,0.14); }
+    .chip:has(input:checked) { border-color: var(--gold); background: rgba(214,170,90,0.09); }
     .seg { display: flex; gap: 10px; }
     .seg label {
       flex: 1; text-align: center; padding: 11px 14px; border-radius: 9px;
@@ -94,16 +94,16 @@
       cursor: pointer; font-size: 15px; transition: border-color .15s, background .15s;
     }
     .seg input { accent-color: var(--gold); margin-right: 7px; transform: translateY(1px); }
-    .seg label:has(input:checked) { border-color: var(--gold); background: rgba(212,175,55,0.14); }
+    .seg label:has(input:checked) { border-color: var(--gold); background: rgba(214,170,90,0.09); }
     .error {
       color: #ff8d6b; font-size: 13px; min-height: 18px; margin: -6px 0 0;
     }
     .submit {
-      margin-top: 4px; width: 100%; padding: 14px 18px; border: none; border-radius: 10px;
-      background: var(--gold); color: #17130a; font-weight: 800; font-size: 16px;
-      letter-spacing: 0.02em; cursor: pointer;
+      margin-top: 4px; width: 100%; padding: 14px 18px; border: none; border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-deep)); color: #091017; font-weight: 800; font-size: 16px;
+      letter-spacing: 0.02em; cursor: pointer; box-shadow: 0 14px 32px rgba(200, 151, 71, 0.22);
     }
-    .submit:hover { background: var(--gold-light); }
+    .submit:hover { filter: brightness(1.06); }
     .submit:disabled { opacity: 0.7; cursor: progress; }
     .fineprint { margin: 18px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
     .fineprint a { color: var(--gold-light); }

@@ -8,13 +8,13 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #08080c;
-      --surface: #121117;
-      --border: rgba(212, 175, 55, 0.34);
-      --gold: #d4af37;
-      --gold-light: #f0d67a;
-      --text: #f4efe3;
-      --muted: #b8b1a4;
+      --bg: #07080a;
+      --surface: #121722;
+      --border: rgba(214, 170, 90, 0.28);
+      --gold: #d4aa5a; --gold-deep: #8a632d;
+      --gold-light: #f0d996;
+      --text: #f7f0df;
+      --muted: #b7aa90;
     }
     * { box-sizing: border-box; }
     body {
@@ -24,10 +24,10 @@
       place-items: center;
       padding: 28px 16px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.14), transparent 36rem),
+        radial-gradient(circle at 50% 0%, rgba(214, 170, 90, 0.12), transparent 36rem),
         var(--bg);
       color: var(--text);
-      font-family: Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
     }
     main {
@@ -64,8 +64,8 @@
       text-decoration: none;
       min-width: 280px;
     }
-    .btn-primary { background: var(--gold); color: #17130a; }
-    .btn-primary:hover { background: var(--gold-light); }
+    .btn-primary { background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-deep)); color: #091017; box-shadow: 0 14px 32px rgba(200, 151, 71, 0.22); }
+    .btn-primary:hover { filter: brightness(1.06); }
     .btn-secondary { background: transparent; color: var(--gold-light); border: 1px solid var(--border); }
     .btn-secondary:hover { border-color: var(--gold); }
     .email-note { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
