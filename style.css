@@ -774,34 +774,20 @@ section {
   }
 }
 
-.venturer-avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(160deg, var(--color-surface-alt), var(--color-surface));
+.venturer-portrait {
+  width: min(100%, 220px);
   border: 1px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--color-gold-light);
-  font-weight: 700;
   margin-inline: auto;
-  overflow: hidden;
-  flex-shrink: 0;
 }
 
-.venturer-avatar img {
+.venturer-portrait img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
-  border-radius: var(--radius-full);
+  height: auto;
 }
 
 @media (min-width: 800px) {
-  .venturer-avatar {
+  .venturer-portrait {
     margin-inline: 0;
   }
 }
